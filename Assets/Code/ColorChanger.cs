@@ -3,14 +3,12 @@ using UnityEngine;
 public class ColorChanger : MonoBehaviour
 {
     [SerializeField]
-    private Color newColor = Color.green;
-
-    private Material playerMaterial;
+    private Color newColor;
+    private Material player;
 
     void Start()
     {
-        playerMaterial = GetComponent<Renderer>().material;
-
-        playerMaterial.color = newColor;
+        player = GetComponent<Renderer>().material;
+        player.color = newColor;
     }
 }
