@@ -5355,7 +5355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 2
-  deceleration: 2
+  deceleration: 4
 --- !u!1001 &5866000835593492294
 PrefabInstance:
   m_ObjectHideFlags: 0

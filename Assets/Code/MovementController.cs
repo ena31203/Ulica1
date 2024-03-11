@@ -5,38 +5,82 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     Animator animator;
-    float velocity = 0.0f;
-    public float acceleration = 0.1f;
-    public float deceleration = 0.5f;
-    int VelocityHash;
+    float velocityX = 0.0f;
+    float velocityY = 0.0f;
+    public float acceleration = 2.0f;
+    public float deceleration = 5.0f;
+
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        VelocityHash = Animator.StringToHash("Velocity");
     }
-    
+
     void Update()
     {
-        bool forwardPressed = Input.GetKey(KeyCode.W);
-        bool runPressed = Input.GetKey("left shift");
+        bool forwardPressed = Input.GetKey("w");
+        bool leftPressed = Input.GetKey("a");
+        bool rightPressed = Input.GetKey("d");
+        bool backPressed = Input.GetKey("s");
 
-        if (forwardPressed && velocity < 1.0f)
+
+        //FORWARD
+        if (forwardPressed)
         {
-            velocity += Time.deltaTime * acceleration;
-            Debug.Log("Forward Pressed: " + forwardPressed);
+            velocityY += Time.deltaTime * acceleration;     //w pritisnut -> ubrzaj
         }
+
+        if (!forwardPressed && velocityY > 0.0f)
+        {
+            velocityY -= Time.deltaTime * deceleration;     //w nije vise pritisnut, a naprijed smo -> uspori prema nazad
+        }
+
         
-        if(!forwardPressed && velocity > 0.0f)
+
+        //BACK
+        if (backPressed)
         {
-            velocity -= Time.deltaTime * deceleration;
+            velocityY -= Time.deltaTime * acceleration;
         }
 
-        if(!forwardPressed && velocity < 0.0f)
+        if(!backPressed && velocityY < 0.0f)
         {
-            velocity = 0.0f;
+            velocityY += Time.deltaTime * deceleration;
         }
 
-        animator.SetFloat(VelocityHash, velocity);
+
+        //LEFT
+        if (leftPressed)
+        {
+            velocityX -= Time.deltaTime * acceleration;
+        }
+
+        if (!leftPressed && velocityX < 0.0f)
+        {
+            velocityX += Time.deltaTime * deceleration;     //a nije vise pritisnut,a lijevo smo -> uspori prema desno
+        }
+
+
+        //RIGHT
+        if (rightPressed)
+        {
+            velocityX += Time.deltaTime * acceleration;
+        }
+
+        if (!rightPressed && velocityX > 0.0f)
+        {
+            velocityX -= Time.deltaTime * deceleration;     //d nije vise pritisnut, a desno smo -> uspori prema lijevo
+        }
+
+
+        //LEFT/RIGHT RESET
+        if (!leftPressed && !rightPressed && velocityX != 0.0f && (velocityX > -0.5f && velocityX < 0.5f))
+        {
+            velocityX = 0.0f;
+        }
+
+        //!!!!!!!!
+        animator.SetFloat("velocityX", velocityX);
+        animator.SetFloat("velocityY", velocityY);
     }
 }
